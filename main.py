@@ -1,6 +1,6 @@
 import dataset
 import re
-import regex as reg
+import lexical_analyzer as la
 from error import syntax
 
 a = '\033[35m'
@@ -18,9 +18,9 @@ with open("code.txt", "w+") as file:
     text = '\n'.join(lines)
     file.write(text)
 
-words = reg.split()
-reg.regex(words)
-reg.print_m()
+words = la.split()
+la.regex(words)
+la.print_m()
 
 
 syntax(words)

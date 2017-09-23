@@ -85,8 +85,11 @@ def regex(dic):
                 val = ''
                 if pattern == 'ident':
                     i = text.index(dic[k])
+                    print('i is:', i)
                     if i not in l:
                         i = text.rindex(dic[k])
+                        print('rindex i:', i)
+                    print('dic[i]', dic[i])
                     p = l.index(i)
                     print(l , p  , ' - ' , dic[l[p]])
 
