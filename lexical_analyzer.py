@@ -92,7 +92,6 @@ def regex(dic):
                     print('dic[i]', dic[i])
                     p = l.index(i)
                     print(l , p  , ' - ' , dic[l[p]])
-
                     if dic[l[p+1]] == '=':
                         print('yeees' , dic[l[p]])
                         j = word.index(dic[k])
@@ -100,8 +99,3 @@ def regex(dic):
                 table.insert(dict(token=dic[k], type=pattern, value=val, position=k))
                 break
 
-
-def print_m():
-    if 'print' in word:
-        i = word.index('print')
-        print('\n' + word[i + 1])

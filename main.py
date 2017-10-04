@@ -1,10 +1,10 @@
 import dataset
 import re
 import lexical_analyzer as la
-from error import syntax
+import syntax_analyzer as sa
+import error
 
 a = '\033[35m'
-
 
 print(a + 'Enter Your Code here!\n')
 with open("code.txt", "w+") as file:
@@ -20,7 +20,5 @@ with open("code.txt", "w+") as file:
 
 words = la.split()
 la.regex(words)
-la.print_m()
-
-
-syntax(words)
+sa.statement_syntax(text)
+error.syntax(words)
