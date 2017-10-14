@@ -1,8 +1,9 @@
 import dataset
 import re
 import lexical_analyzer as la
-import syntax_analyzer as sa
+import syntax_analyzer as sya
 import error
+import semantic_analyzer as sea
 
 a = '\033[35m'
 
@@ -18,7 +19,15 @@ with open("code.txt", "w+") as file:
     text = '\n'.join(lines)
     file.write(text)
 
-words = la.split()
-la.regex(words)
-sa.statement_syntax(text)
-error.syntax(words)
+try:
+    words = la.split()
+    la.regex(words)
+    # print('2')
+    sya.statement_syntax(text)
+    # print('3')
+    error.syntax(words)
+    # print('4')
+    sea.type_check(words)
+    # print('5')
+except Exception as e:
+    print(e)
