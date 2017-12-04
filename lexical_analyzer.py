@@ -8,7 +8,7 @@ def split():
         text = file.read()
         text2 = text
         global word
-        word = re.findall(r'(\"?\w+\.?\w*\"?)', text)
+        word = re.findall(r'(\"?\'?\w+\.?\w*\'?\"?)', text)
         op = re.findall(r'[\+\-\*\{\}\(\)\];]', text)
         rop = re.findall(r'[\=\<\>\!]=?', text)
         token = word + op + rop
@@ -26,7 +26,6 @@ def split():
         word_dict = {}
         for i in range(len(token_dict)):
             word_dict[token_key[i]] = token_dict[token_key[i]]
-
         return word_dict
 
 
@@ -45,7 +44,7 @@ def replace(text, word):
         return text
 
 
-def regex(dic):
+def regex(words):
     db = dataset.connect('sqlite:///analyzer.db')
     table = db['result']
     table.delete()
@@ -70,29 +69,41 @@ def regex(dic):
         'close-curlybrucket': r'\}',
         'end of line': r';'
     }
-    global pattern
-    l = list(dic.keys())
-    # print(l)
-    for k in dic:
+    l = list(words.keys())
+    value = {}
+    past_index = []
+    past_j = []
+    word2 = word
+    pt = ''
+    for key in words:
         for pattern in token_name:
-            if re.match(token_name[pattern], dic[k]):
+            if re.match(token_name[pattern], words[key]):
                 val = ''
+                if words[key] == 'int' or words[key] == 'float' or words[key] == 'string':
+                    pt = words[key]
                 if pattern == 'ident':
-                    i = text.index(dic[k])
-                    #print('i is:', i)
+                    i = text.index(words[key])
+                    if i in past_index:
+                        i = text.rindex(words[key])
                     if i not in l:
-                        i = text.rindex(dic[k])
-                        # print('rindex i:', i)
-                    #print('dic[i]', dic[i])
+                        i = text.rindex(words[key])
                     p = l.index(i)
-                    # print(l , p  , ' - ' , dic[l[p]])
                     try:
-                        if dic[l[p + 1]] == '=':
-                            # print('yeees' , dic[l[p]])
-                            j = word.index(dic[k])
-                            val = word[j + 1]
-                    except:
-                        pass
-                table.insert(dict(token=dic[k], type=pattern, value=val, position=k))
+                        j = word2.index(words[key])
+                        if j in past_j:
+                            word2.remove(words[key])
+                        j = word2.index(words[key])
+                        if words[l[p + 1]] == '=':
+                            val = pt, words[key]
+                            value[val] = word2[j + 1]
+                            pt = ''
+                        past_j.append(j)
+                    except Exception as e:
+                        print('lexical exeption', e)
+                    past_index.append(i)
+                if val != '':
+                    table.insert(dict(token=words[key], type=pattern, value=value[val], position=key))
+                else:
+                    table.insert(dict(token=words[key], type=pattern, value='', position=key))
                 break
-
+    return value

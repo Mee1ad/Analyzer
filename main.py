@@ -21,13 +21,14 @@ with open("code.txt", "w+") as file:
 
 try:
     words = la.split()
-    la.regex(words)
+    values = la.regex(words)
     # print('2')
     sya.statement_syntax(text)
     # print('3')
     error.syntax(words)
     # print('4')
-    sea.type_check(words)
+    sea.type_check(words, values)
     # print('5')
 except Exception as e:
-    print(e)
+    print('main exception')
+    raise e
