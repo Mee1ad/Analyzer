@@ -2,4 +2,3 @@ __pycache__/
 .idea/
 analyzer.db
 code.txt
-requirements.txt

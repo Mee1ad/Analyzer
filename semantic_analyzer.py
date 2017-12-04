@@ -27,3 +27,4 @@ def type_check(words, values):
                 print('ValueError:', values[key], 'is not', key[0])
         value_type[key[1]] = key[0]
         value_type[values[key]] = key[0]
+
